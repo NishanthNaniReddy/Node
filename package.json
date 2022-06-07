@@ -1,0 +1,29 @@
+{
+  "name": "nodejsassignment",
+  "version": "1.0.0",
+  "description": "assignment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NishanthNaniReddy/nani.git"
+  },
+  "author": "Nishanth Mahasamudram",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NishanthNaniReddy/nani/issues"
+  },
+  "homepage": "https://github.com/NishanthNaniReddy/nani#readme",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "express": "^4.18.1",
+    "joi": "^17.6.0"
+  },
+  "devDependencies": {
+    "axios-mock-adapter": "^1.21.1",
+    "jest": "^28.1.1",
+    "supertest": "^6.2.3"
+  }
+}
