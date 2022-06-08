@@ -1,0 +1,48 @@
+const Joi = require('joi')
+const axios = require('axios');
+module.exports = (app) => {
+
+    function createSchema(req, res, next) {
+        const schema = Joi.object({
+            'lbg-txn-branch-location': Joi.string().required()
+        });
+        validateRequest(req, next, schema);
+    }
+
+    function validateRequest(req, next, schema) {
+        const options = {
+            abortEarly: false, // include all errors
+            allowUnknown: true, // ignore unknown props
+            stripUnknown: true // remove unknown props
+        };
+        const { error, value } = schema.validate({'lbg-txn-branch-location': req.header('lbg-txn-branch-location')}, options);
+        if (error) {
+            const err = new Error(error);
+            err.status = 404;
+            next(err);
+        } else {
+            next();
+        }
+    }
+
+    app.get('/getBranch', createSchema, async (req,res,next) => {
+        try {
+            const location = req.header('lbg-txn-branch-location');
+            const result = await axios({
+                url: "https://api.lloydsbank.com/open-banking/v2.2/branches",
+                method: "get",
+            });
+            if(result?.data?.data[0]?.Brand[0]?.Branch){
+                const branch = result.data.data[0].Brand[0].Branch.filter(branch => branch?.PostalAddress?.TownName === location.toUpperCase());
+                res.status(200).json(branch);
+            } else{
+                res.status(200).json([]);
+            }
+        } catch (err) {
+            err = new Error(err);
+            err.status = 500;
+            next(err)
+        }
+    });
+
+}

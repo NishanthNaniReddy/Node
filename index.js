@@ -1,11 +1,20 @@
-const express = require('express')
-const app = express();
-const port = 3000;
+const express = require('express');
+const { PORT } = require('./config');
+const expressApp = require('./app.js');
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-});
+const StartServer = async() => {
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}!`)
-});
+    const app = express();
+
+    await expressApp(app);
+
+    app.listen(PORT, () => {
+        console.log(`listening to port ${PORT}`);
+    })
+    .on('error', (err) => {
+        console.log(err);
+        process.exit();
+    })
+}
+
+StartServer();
