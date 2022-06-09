@@ -16,6 +16,15 @@ it('when API call is successful', async () => {
         res.json(branches);
         });
         const result = await supertest(app).get('/getBranch').set({'lbg-txn-branch-location': 'london'});
-        console.log('result:'+JSON.stringify(result));
+        expect(result['status']).toEqual(200);
         expect(result['text']).toEqual(JSON.stringify(branches));
+});
+
+it('when API call is unsuccessful', async () => {
+    app.get('/getBranch', function (req, res, next) {
+    res.json({});
+    });
+    const result = await supertest(app).get('/getBranch').set({'lbg-txn-branch-location': 'london'});
+    expect(result['status']).toEqual(200);
+    expect(result['text']).toEqual("{}");
 });
