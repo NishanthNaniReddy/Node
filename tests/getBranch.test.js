@@ -1,9 +1,10 @@
-const request = require('supertest')
+const supertest = require('supertest')
 const app = require('../app.js')
 
-
-it('Testing to see if Jest works', async () => {
+jest.mock('../api/getBranch', () => jest.fn((req, res, next) => res.json({})));
+it('Check if method type is GET', () => {
     expect(1).toBe(1)
-    const res = await request(app).get('/getBranch');
-    // console.log('res:'+res);
+    const res = supertest(app).get('/getBranch').set({'lbg-txn-branch-location': 'london'});
+    expect(res['method']).toEqual("GET");
+    console.log('res:'+JSON.stringify(res));
 });
