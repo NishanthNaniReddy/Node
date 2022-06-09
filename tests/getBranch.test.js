@@ -1,10 +1,21 @@
 const supertest = require('supertest')
-const app = require('../app.js')
+const express = require('express')
+const branches = require('./mock')
+const axios = require("axios")
 
-jest.mock('../api/getBranch', () => jest.fn((req, res, next) => res.json({})));
+jest.mock("axios");
+
+const app = express();
 it('Check if method type is GET', () => {
-    expect(1).toBe(1)
     const res = supertest(app).get('/getBranch').set({'lbg-txn-branch-location': 'london'});
     expect(res['method']).toEqual("GET");
-    console.log('res:'+JSON.stringify(res));
+});
+
+it('when API call is successful', async () => {
+        app.get('/getBranch', function (req, res) {
+        res.json(branches);
+        });
+        const result = await supertest(app).get('/getBranch').set({'lbg-txn-branch-location': 'london'});
+        console.log('result:'+JSON.stringify(result));
+        expect(result['text']).toEqual(JSON.stringify(branches));
 });

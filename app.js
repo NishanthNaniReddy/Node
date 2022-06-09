@@ -18,5 +18,5 @@ module.exports = async (app) => {
 
     // error handling
     app.use(HandleErrors);
-    module.export = app;
+    module.exports = app;
 };
